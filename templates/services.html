@@ -1,0 +1,54 @@
+{% load static %}
+
+{% block content %}
+
+<h4 class="text-center mt-4 text-uppercase mx-0">Servicios</h4>
+<div class="container mx-auto mb-3">
+  <div class="row row-cols-1 row-cols-md-2 g-4 mt-2 mb-3 mx-auto">
+      <div class="col d-flex flex-column justify-content-center align-items-center">
+        <div class="card h-100">
+          <div class="flex mx-auto mt-2 mb-2">
+              <img src="{% static 'images/corte.jpg' %}" class="card-img-top" style="border-radius: 50%; width: 75px; height: 85px;" alt="corte">
+              <img src="{% static 'images/corte2.png' %}" class="card-img-top" style="border-radius: 50%; width: 75px; height: 85px;" alt="corte1">
+              <img src="{% static 'images/corte1.png' %}" class="card-img-top" style="border-radius: 50%; width: 75px; height: 85px;" alt="corte2">
+          </div>
+          <div class="card-body">
+            <h6 class="text-uppercase mx-0"><strong>Corte de cabello</strong></h6>
+            <p class="card-text">Cortes clásicos trabajados a tijera, navajas y máquinas. <br>
+              Cortes modernos, tipo “Mullet” y/o fade (degrade) alto-bajo-mediano.</p>
+          </div>
+          <div class="d-flex flex-column bg-light py-2">
+            <h6 class="text-uppercase mx-3">Precio:<strong> $2500</strong></h6>
+            <small class="text-muted mx-3"><i class="fa-regular fa-clock" style="color: #000000;"></i> 40 minutos</small>
+            <button class="btnCard mb-2"><a href="#">Agregar servicio</a><i class="fa-solid fa-plus fa-md" style="color: #ffffff;"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="col d-flex flex-column justify-content-center align-items-center">
+        <div class="card h-100">
+          <div class="flex mx-auto mt-2 mb-2">
+              <img src="{% static 'images/barba1.png' %}" class="card-img-top" style="border-radius: 50%; width: 75px; height: 85px;" alt="barba1">
+              <img src="{% static 'images/barba2.png' %}" class="card-img-top" style="border-radius: 50%; width: 75px; height: 85px;" alt="barba2">
+              <img src="{% static 'images/barba3.png' %}" class="card-img-top" style="border-radius: 50%; width: 75px; height: 85px;" alt="barba3">
+          </div>
+          <div class="card-body">
+            <h6 class="text-uppercase mx-0"><strong>Corte y barba</strong></h6>
+            <p class="card-text">Sumamos servicio de barba al corte. <br>Puede ser una barberia contemporánea o barberia húmeda (toalla caliente con sus respectivos productos).</p>
+          </div>
+          <div class="d-flex flex-column bg-light py-2">
+            <h6 class="text-uppercase mx-3">Precio:<strong> $3000</strong></h6>
+            <small class="text-muted mx-3"><i class="fa-regular fa-clock" style="color: #000000;"></i> 60 minutos</small>
+            <button class="btnCard mb-2"><a href="#">Agregar servicio</a><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+
+
+

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mx-auto mb-3">
+    <form method="post" action="{% url 'create_booking' %}">
+        {% csrf_token %}
+
+        <div class="row">
+            {% for day, timeslots in timeslots_by_day.items %}
+                <div class="col-md-2">
+                    <p class="mt-3">El día {{ day }} están disponibles los siguientes turnos:</p>
+                    {% for timeslot in timeslots %}
+                        {% if not timeslot.is_reservated and not timeslot.is_blocked %}
+                            <div>
+                                <input type="radio" name="timeslot" value="{{ timeslot.id }}" required>
+                                {{ timeslot.start_time }} - {{ timeslot.end_time }}
+                            </div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}
+                        
+                        
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if form %}
+            {{ form.full_name }}
+            {{ form.email }}
+            {{ form.phone }}
+            {{ form.salon }}
+            {{ form.service }}
+        {% endif %}
+
+
+        <button type="submit">Reservar</button>
+    </form>
+</div>
+
+{% endblock content %}
+
+
+
+
+

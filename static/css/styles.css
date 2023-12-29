@@ -1,0 +1,79 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+   
+}
+
+body::-webkit-scrollbar {
+    width: 12px;               /* width of the entire scrollbar */
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: none;        /* color of the tracking area */
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: black;    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid white;  /* creates padding around scroll thumb */
+}
+
+body, footer, nav {
+    width: 100vw;
+}
+
+h1, h2, h3, h4, h5, h6, a, span, p {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+.btn {
+    background-color: black;
+    color: white;
+}
+
+.btn:hover {
+    color: rgb(255, 255, 255);
+    background-color: #303030;
+}
+
+.nav-logo {
+    border-radius: 50%;
+}
+
+#map {
+    height: 25vh;
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 400px;
+    min-width: 290px; /* Establecer un ancho máximo para evitar que el mapa sea demasiado ancho en pantallas grandes */
+    margin: 0 auto; /* Centrar el elemento horizontalmente */
+}
+
+.btnCard {
+    background-color: black;
+    color: white;
+    width: 35%;
+    padding: 8px;
+    margin: auto;
+    border-radius: 5px;
+    border: none;
+}
+
+
+
+
+
+
+
