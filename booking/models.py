@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from services.models import HairSalon, Service, TimeSlot
@@ -8,14 +8,13 @@ from django.db.models import Q
 
 class Booking(models.Model):
 
-    full_name = models.CharField(max_length=254, null=False, blank=False)
-    email = models.EmailField(max_length=254, help_text='Ingrese su dirección de correo electrónico')
-    phone = models.CharField(max_length=15, help_text='Ingrese el número de teléfono celular')
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='user_bookings')
     salon = models.ForeignKey(HairSalon, on_delete=models.CASCADE, related_name='salon_booking')
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='service_booking')
     timeslot= models.ForeignKey(TimeSlot, on_delete=models.CASCADE, related_name='time_slot_booking')
     booking_date = models.DateField(auto_now_add=True)
     is_confirmed = models.BooleanField(default=False)
+    is_cancelled = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Bookings"
@@ -23,7 +22,7 @@ class Booking(models.Model):
         ordering = ['timeslot']
 
     def __str__(self):
-        return f'Turno para {self.email} - {self.service.service_type} - {self.timeslot}'
+        return f'Turno para {self.user.email} - {self.service.service_type} - {self.timeslot}'
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

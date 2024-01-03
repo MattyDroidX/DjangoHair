@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="container mx-auto mb-3">
-    <form method="post" action="{% url 'create_booking' %}">
+    <form method="post" action="{% url 'create_booking_authenticated' %}">
         {% csrf_token %}
 
         <div class="row">
@@ -28,9 +28,8 @@
         </div>
 
         {% if form %}
-            {{ form.full_name }}
             {{ form.email }}
-            {{ form.phone }}
+            {{ form.phone_number }}
             {{ form.salon }}
             {{ form.service }}
         {% endif %}

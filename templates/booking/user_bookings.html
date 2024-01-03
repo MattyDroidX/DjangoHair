@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Tus Reservas</h2>
+  {% if bookings %}
+    <ul>
+      {% for booking in bookings %}
+        <li>
+          {{ booking.salon }} - {{ booking.service }} - {{ booking.timeslot }} - {{ booking.booking_date }}
+          {% if not booking.is_cancelled %}
+            <form method="post" action="{% url 'cancel_booking' booking.id %}">
+              {% csrf_token %}
+              <button type="submit">Cancelar Reserva</button>
+            </form>
+          {% else %}
+            <p>Reserva Cancelada</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tienes reservas.</p>
+  {% endif %}
+{% endblock %}

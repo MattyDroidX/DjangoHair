@@ -9,7 +9,7 @@ class BookingForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = ['full_name', 'email', 'phone', 'salon', 'service', 'timeslot']
+        fields = ['salon', 'service', 'timeslot']
 
         
 
