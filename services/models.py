@@ -1,10 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, time
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-
 
 # Create your models here.
 
@@ -51,6 +49,7 @@ class OpeningHours(models.Model):
 
         for interval in intervals:
             current_datetime = opening_datetime
+            duration = interval.total_seconds() // 60
 
             while current_datetime < closing_datetime:
                 end_datetime = current_datetime + interval
@@ -61,7 +60,8 @@ class OpeningHours(models.Model):
                     date = self.date,
                     start_time=current_datetime.time(),
                     end_time=end_datetime.time(),
-                    is_blocked=False  # Puedes ajustar esto según tus necesidades
+                    is_blocked=False,  # Puedes ajustar esto según tus necesidades
+                    duration = duration
                 )
 
                 current_datetime = end_datetime
@@ -85,6 +85,7 @@ class TimeSlot(models.Model):
     end_time = models.TimeField()
     is_blocked = models.BooleanField()
     is_reservated = models.BooleanField(default=False)
+    duration = models.IntegerField(default=40)
 
     def __str__(self):
         return f'El turno es el {self.opening_hours.date} desde {self.start_time} hasta {self.end_time}'
@@ -101,7 +102,7 @@ class Service(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return self.service_type
+        return f'Service {self.id} - {self.service_type}'
     
     class Meta:
         verbose_name_plural = 'Services'

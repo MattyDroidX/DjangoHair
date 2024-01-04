@@ -4,16 +4,35 @@ from .forms import BookingForm
 from .models import Booking
 from django.db.models import Q
 from services.models import OpeningHours, TimeSlot
+from dinastia_salon.views import home
 
 
-
-def get_booking(request):
+def get_booking_hair(request):
     available_days = TimeSlot.objects.values_list('date', flat=True).distinct()
     timeslots_by_day = {}
     hours = OpeningHours.objects.all()
 
     for day in available_days:
-        timeslots_by_day[day] = TimeSlot.objects.filter(date=day)
+        timeslots_by_day[day] = TimeSlot.objects.filter(date=day, duration=40)
+
+    form = BookingForm()
+
+    context = {
+        'form': form,
+        'hours': hours,
+        'timeslots_by_day': timeslots_by_day
+    }
+
+    return render(request, 'booking/booking.html', context)
+
+
+def get_booking_hair_beard(request):
+    available_days = TimeSlot.objects.values_list('date', flat=True).distinct()
+    timeslots_by_day = {}
+    hours = OpeningHours.objects.all()
+
+    for day in available_days:
+        timeslots_by_day[day] = TimeSlot.objects.filter(date=day, duration=60)
 
     form = BookingForm()
 
@@ -41,10 +60,10 @@ def create_booking_authenticated(request):
             booking.user = user
 
             booking.save()
-            return redirect('success_booking')
+            return redirect('user_bookings')
 
     # Si el método no es 'POST', redirigir a la vista para el método 'GET'
-    return get_booking(request)
+    return home(request)
 
 @login_required
 def success_booking(request):

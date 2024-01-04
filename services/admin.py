@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class TimeSlotAdmin(admin.ModelAdmin):
-    list_display = ('opening_hours_day', 'start_time', 'end_time', 'is_blocked', 'is_reservated')
+    list_display = ('opening_hours_day', 'start_time', 'end_time', 'duration', 'is_blocked', 'is_reservated')
     list_per_page = 12
 
     def opening_hours_day(self, obj):
