@@ -1,46 +1,76 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
+
 
 {% block content %}
-
+<head>
+    <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+</head>
 <div class="container mx-auto mb-3">
+    <h2 class="mt-3 text-center text-uppercase">{{title.0.service_type}}</h2>
     <form method="post" action="{% url 'create_booking_authenticated' %}">
 
         {% csrf_token %}
 
         <div class="row">
-            {% for day, timeslots in timeslots_by_day.items %}
+            {% for day in current_days.object_list %}
                 <div class="col-md-2">
-                    <p class="mt-3">El día {{ day }} están disponibles los siguientes turnos:</p>
-                    {% for timeslot in timeslots %}
-                        {% if not timeslot.is_reservated and not timeslot.is_blocked %}
-                            <div class="x">
-                                <input type="radio" name="timeslot" value="{{ timeslot.id }}" required>
-                                {{ timeslot.start_time }} - {{ timeslot.end_time }}
-                            </div>
-                        {% else %}
-                            <div></div>
-                        {% endif %}
-                    {% endfor %}
+                    <p class="mt-3">El día <strong>{{ day|date:'l j \d\e F \d\e Y'|capfirst }}</strong> están disponibles los siguientes turnos:</p>
+                    {% with day_timeslots=timeslots_by_day|dict_key:day %}
+                        {% for timeslot in day_timeslots %}
+                            {% if not timeslot.is_reservated and not timeslot.is_blocked %}
+                                <div class="time-slot">
+                                    <input type="radio" name="timeslot" id="timeslot_{{ timeslot.id }}" value="{{ timeslot.id }}" required>
+                                    <label for="timeslot_{{ timeslot.id }}">
+                                        {{ timeslot.start_time }} - {{ timeslot.end_time }}
+                                    </label>
+                                </div>
+                            {% else %}
+                                <div></div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
                 </div>
             {% endfor %}
         </div>
-
-        {% if form %}
-            {{ form.email }}
-            {{ form.phone_number }}
-            {{ form.salon }}
-            {{ form.service }}
-        {% endif %}
-
-        <button type="submit">Reservar</button>
         
-        <div class="row">
-            <div class="col-md-12 text-center mt-3">
-                <button type="button" id="prev-week">Semana Anterior</button>
-                <button type="button" id="next-week">Siguiente Semana</button>
-            </div>
+        <div class="pagination mt-3">
+            <span class="step-links">
+                {% if current_days.has_previous %}
+                    <a href="?page=1" class="text-decoration-none btnCard" style="color: white;">&laquo; Inicio</a>
+                    <a href="?page={{ current_days.previous_page_number }}" class="text-decoration-none btnCard" style="color: white;">Anterior</a>
+                {% endif %}
+        
+                <span class="current">
+                    Página {{ current_days.number }} de {{ current_days.paginator.num_pages }}.
+                </span>
+        
+                {% if current_days.has_next %}
+                    <a href="?page={{ current_days.next_page_number }}" class="text-decoration-none btnCard" style="color: white;">Siguiente</a>
+                    <a href="?page={{ current_days.paginator.num_pages }}" class="text-decoration-none btnCard" style="color: white;">Última &raquo;</a>
+                {% endif %}
+            </span>
         </div>
+
+
+        <div class="mt-3 mb-3">
+            {% if form %}
+                {{ form.email }}
+                {{ form.phone_number }}
+                <div class="form-group">
+                    <label for="{{ form.salon.id_for_label }}"><strong>Salón: </strong></label>
+                    {{ form.salon }}
+                </div>
+                <div class="form-group mt-3">
+                    <label for="{{ form.service.id_for_label }}"><strong>Servicio: </strong></label>
+                    {{ form.service }}
+                </div>
+            {% endif %}
+        </div>
+        
+
+        <button type="submit" class="btnCard" style="width: 100px;">Reservar</button>
 
     </form>
 </div>

@@ -13,6 +13,9 @@ class HairSalon(models.Model):
 
     def __str__(self):
         return f'{self.name}, {self.street}, {self.city}'   
+    
+    class Meta:
+        verbose_name_plural = "Salon"
 
 
 class OpeningHours(models.Model):
@@ -23,10 +26,14 @@ class OpeningHours(models.Model):
     closing_time = models.TimeField()
     is_closed = models.BooleanField()
 
+    class Meta:
+        verbose_name_plural = "Horarios"
+
     def get_opening_hours(self):
             if self.is_closed:
                 return _("Cerrado todo el día")
-            return f"El dia {self.date.strftime('%A %d de %b. %Y')} desde {self.opening_time} hasta {self.closing_time}"
+            nombre_dia_semana = self.date.strftime('%A')
+            return f"El {nombre_dia_semana} {self.date.strftime('%d de %B de %Y')} desde {self.opening_time} hasta {self.closing_time}"
     
     def get_time_slots_by_date(self, date):
         return self.timeslot_set.filter(opening_hours=self, opening_hours__date=date)
@@ -87,6 +94,9 @@ class TimeSlot(models.Model):
     is_reservated = models.BooleanField(default=False)
     duration = models.IntegerField(default=40)
 
+    class Meta:
+        verbose_name_plural = "Turnos"
+
     def __str__(self):
         return f'El turno es el {self.opening_hours.date} desde {self.start_time} hasta {self.end_time}'
     
@@ -102,10 +112,10 @@ class Service(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return f'Service {self.id} - {self.service_type}'
+        return f'{self.service_type}'
     
     class Meta:
-        verbose_name_plural = 'Services'
+        verbose_name_plural = 'Servicios'
         ordering = ['id']
 
 

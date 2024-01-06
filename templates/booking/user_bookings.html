@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<div class="mx-auto text-center mt-3">
   <h2>Tus Reservas</h2>
   {% if bookings %}
     <ul>
       {% for booking in bookings %}
         <li>
-          {{ booking.salon }} - {{ booking.service }} - {{ booking.timeslot }} - {{ booking.booking_date }}
+          <p>{{ booking.salon }} - {{ booking.service }} - {{ booking.timeslot }}</p>
           {% if not booking.is_cancelled %}
-            <form method="post" action="{% url 'cancel_booking' booking.id %}">
+            <form method="post" action="{% url 'cancel_booking' booking.id %}" class="cancel-form">
               {% csrf_token %}
-              <button type="submit">Cancelar Reserva</button>
+              <button type="submit" class="btnCard text-center" style="width: 180px; font-family: 'Montserrat', sans-serif;">Cancelar Reserva</button>
             </form>
           {% else %}
             <p>Reserva Cancelada</p>
@@ -21,4 +23,22 @@
   {% else %}
     <p>No tienes reservas.</p>
   {% endif %}
+</div>
+
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var cancelForms = document.querySelectorAll('.cancel-form');
+
+      cancelForms.forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+          var confirmCancel = confirm('¿Estás seguro de que deseas cancelar la reserva?');
+          if (!confirmCancel) {
+            event.preventDefault(); // Cancela el envío del formulario si el usuario elige "Cancelar" en la alerta
+          }
+        });
+      });
+    });
+  </script>
+
 {% endblock %}

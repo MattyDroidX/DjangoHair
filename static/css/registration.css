@@ -1,0 +1,62 @@
+label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+button {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+
+  
+  /* Style the form heading */
+h2 {
+    color: #333;
+}
+  
+  /* Apply styles to form fields */
+form {
+    margin-top: 20px;
+}
+  
+  /* Style form labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+  
+  /* Style form input fields */
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+  
+  /* Style the error messages */
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+  
+.text-center {
+    text-align: center;
+}
+  
+  /* Optional: Add spacing between form elements */
+br {
+    margin-bottom: 10px;
+}
+
+.btnCard {
+    width: auto;
+}

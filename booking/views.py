@@ -5,7 +5,8 @@ from .models import Booking
 from django.db.models import Q
 from services.models import OpeningHours, TimeSlot
 from dinastia_salon.views import home
-
+from services.models import Service
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def get_booking_hair(request):
     available_days = TimeSlot.objects.values_list('date', flat=True).distinct()
@@ -15,12 +16,25 @@ def get_booking_hair(request):
     for day in available_days:
         timeslots_by_day[day] = TimeSlot.objects.filter(date=day, duration=40)
 
-    form = BookingForm()
+    # Paginación
+    page = request.GET.get('page')
+    paginator = Paginator(available_days, 6)  # Muestra 6 días por página
+    try:
+        current_days = paginator.page(page)
+    except PageNotAnInteger:
+        current_days = paginator.page(1)
+    except EmptyPage:
+        current_days = paginator.page(paginator.num_pages)
 
+    form = BookingForm()
+    form.fields['service'].queryset = Service.objects.filter(service_type='Corte de cabello')
+    title = Service.objects.filter(service_type='Corte de cabello')
     context = {
         'form': form,
         'hours': hours,
-        'timeslots_by_day': timeslots_by_day
+        'timeslots_by_day': timeslots_by_day,
+        'current_days': current_days, 
+        'title': title
     }
 
     return render(request, 'booking/booking.html', context)
@@ -34,12 +48,26 @@ def get_booking_hair_beard(request):
     for day in available_days:
         timeslots_by_day[day] = TimeSlot.objects.filter(date=day, duration=60)
 
+    # Paginación
+    page = request.GET.get('page')
+    paginator = Paginator(available_days, 6)  # Muestra 6 días por página
+    try:
+        current_days = paginator.page(page)
+    except PageNotAnInteger:
+        current_days = paginator.page(1)
+    except EmptyPage:
+        current_days = paginator.page(paginator.num_pages)
+
     form = BookingForm()
+    form.fields['service'].queryset = Service.objects.filter(service_type='Corte y barba')
+    title = Service.objects.filter(service_type='Corte y barba')
 
     context = {
         'form': form,
         'hours': hours,
-        'timeslots_by_day': timeslots_by_day
+        'timeslots_by_day': timeslots_by_day,
+        'current_days': current_days,
+        'title': title
     }
 
     return render(request, 'booking/booking.html', context)
@@ -64,10 +92,6 @@ def create_booking_authenticated(request):
 
     # Si el método no es 'POST', redirigir a la vista para el método 'GET'
     return home(request)
-
-@login_required
-def success_booking(request):
-    return render(request, 'booking/success_booking.html', {})
 
 @login_required
 def user_bookings(request):

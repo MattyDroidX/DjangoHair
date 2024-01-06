@@ -1,10 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/registration.css' %}">
+</head>
+<div class="mx-auto text-center mt-3">
   <h2>Registro</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Registrarse</button>
+
+    {% if form.errors and form.non_field_errors %}
+      <div class="alert alert-danger">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    {{ form.email.errors }}
+    {{ form.phone_number.errors }}
+    {{ form.password1.errors }}
+    {{ form.password2.errors }}
+
+    {{ form.email.label_tag }}
+    {{ form.email }}
+    <br>
+
+    {{ form.phone_number.label_tag }}
+    {{ form.phone_number }}
+    <br>
+
+    {{ form.password1.label_tag }}
+    {{ form.password1 }}
+    <br>
+
+    {{ form.password2.label_tag }}
+    {{ form.password2 }}
+    <br>
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        Hubo errores en el formulario. Por favor, corrígelos.
+      </div>
+    {% endif %}
+
+    <button type="submit" class="btnCard">Registrarse</button>
   </form>
+</div>
 {% endblock %}

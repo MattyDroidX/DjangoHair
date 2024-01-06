@@ -27,5 +27,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['phone_number']
 
+    class Meta:
+        verbose_name_plural = "Clientes"
+
     def __str__(self):
         return self.email

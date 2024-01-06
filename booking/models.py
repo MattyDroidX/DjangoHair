@@ -17,9 +17,9 @@ class Booking(models.Model):
     is_cancelled = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name_plural = "Bookings"
+        verbose_name_plural = "Turnos reservados"
         unique_together = ('salon', 'timeslot')
-        ordering = ['timeslot']
+        ordering = ['timeslot__date', 'timeslot__start_time']
 
     def __str__(self):
         return f'Turno para {self.user.email} - {self.service.service_type} - {self.timeslot}'
