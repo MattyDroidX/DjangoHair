@@ -19,6 +19,8 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -31,4 +33,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = "Clientes"
 
     def __str__(self):
-        return self.email
+        return f'{self.first_name} {self.last_name}'

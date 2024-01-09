@@ -40,6 +40,8 @@ class OpeningHours(models.Model):
     
     def __str__(self):
         return f"{self.get_opening_hours()}"
+    
+    
 
 # CREA TIME SLOTS DE CORTE 
     def create_time_slots(self):
@@ -78,7 +80,6 @@ class OpeningHours(models.Model):
         super().save(*args, **kwargs)
         self.create_time_slots()
 
-
 @receiver(post_save, sender=OpeningHours)
 def create_timeslots_on_openinghours_save(sender, instance, **kwargs):
     instance.create_time_slots()
@@ -110,7 +111,8 @@ class Service(models.Model):
     description = models.TextField(blank=True, null=True)
     service_type = models.CharField(choices=SERVICE_TYPE, max_length=20)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-
+    duration = models.IntegerField()
+    
     def __str__(self):
         return f'{self.service_type}'
     

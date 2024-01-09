@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <div class="container mx-auto mb-2 mt-3">
     <div class="row">
         <div class="col-md-4 text-justify mx-auto">
@@ -21,7 +22,6 @@
         </div>
     </div>
 </div>
-
-{% include "services.html" %}
+{% include "services.html" with services=services %}
 {% endblock content %}
 

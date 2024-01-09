@@ -3,6 +3,11 @@ label {
     font-weight: 500;
 }
 
+.time-slot label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
 h2 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
@@ -73,3 +78,33 @@ h2 {
     align-items: center;
     justify-content: center;
 }
+
+/* Estilos para dispositivos móviles */
+@media only screen and (max-width: 767px) {
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .col-md-2 {
+        width: calc(33.33% - 16px); /* Calcula el ancho para mostrar 3 timeslots en una fila */
+        margin-bottom: 8px; /* Espaciado entre filas en móviles */
+    }
+    
+    .time-slot {
+        width: 100%; /* Ocupa el 100% del ancho en dispositivos móviles */
+        margin-bottom: 8px; /* Espaciado entre timeslots en móviles */
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        justify-content: center;
+        font-size: 12px;
+    }
+
+    .last {
+        display: none;
+    }
+}
+
+

@@ -4,12 +4,15 @@ from .models import CustomUser
 
 class RegisterForm(UserCreationForm):
 
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
     email = forms.EmailField()
     phone_number = forms.CharField(max_length=15)
+    
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'phone_number', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'email','phone_number', 'password1', 'password2']
         
     def clean_password2(self):
         # Validador para asegurar que las contraseñas coincidan

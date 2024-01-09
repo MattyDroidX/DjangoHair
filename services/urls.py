@@ -3,5 +3,5 @@ from .views import services
 
 urlpatterns = [
     # otras rutas...
-    path('servicios/', services, name='services'),
+    path('services/', services, name='services'),
 ]
