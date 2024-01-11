@@ -1,4 +1,4 @@
 from django import forms
 
 class ConfirmDeleteForm(forms.Form):
-    confirmation = forms.BooleanField(help_text="Confirmo que deseo eliminar las OpeningHours pasadas.")
+    confirmation = forms.BooleanField(help_text="Confirmo que deseo eliminar las Horarios de apertura pasados.")

@@ -8,7 +8,10 @@ button {
     font-weight: 500;
 }
 
-
+.btn:hover {
+  color: rgb(255, 255, 255);
+  background-color: #303030;
+}
   
   /* Style the form heading */
 h2 {

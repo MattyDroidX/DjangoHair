@@ -10,7 +10,7 @@
 <form method="post" action="{% url 'delete_past_opening_hours' %}">
     {% csrf_token %}
     {{ form }}
-    <button type="submit">Confirmar Eliminación</button>
+    <button type="submit" class="btnCard btn" style="font-family: 'Montserrat', sans-serif; font-weight: 500;">Confirmar Eliminación</button>
   </form>
 </div>
   {% endblock content %}

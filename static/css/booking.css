@@ -13,6 +13,11 @@ h2 {
     font-weight: 500;
 }
 
+.btn:hover {
+    color: rgb(255, 255, 255);
+    background-color: #303030;
+}
+
 .custom-select {
     display: block;
     width: 50%;
@@ -44,7 +49,7 @@ h2 {
     margin-bottom: 8px;
     position: relative;
     overflow: hidden;
-    width: 120px;
+    width: 130px;
     height: 30px;
     display: flex;
     align-items: center;
@@ -106,5 +111,6 @@ h2 {
         display: none;
     }
 }
+
 
 

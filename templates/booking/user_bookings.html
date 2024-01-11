@@ -12,7 +12,7 @@
           {% if not booking.is_cancelled %}
             <form method="post" action="{% url 'cancel_booking' booking.id %}" class="cancel-form">
               {% csrf_token %}
-              <button type="submit" class="btnCard text-center" style="width: 180px; font-family: 'Montserrat', sans-serif;">Cancelar Reserva</button>
+              <button type="submit" class="btnCard text-center mb-3" style="width: 180px; font-family: 'Montserrat', sans-serif;">Cancelar Reserva</button>
             </form>
           {% else %}
             <p>Reserva Cancelada</p>
