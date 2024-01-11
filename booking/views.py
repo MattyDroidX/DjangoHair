@@ -8,12 +8,16 @@ from dinastia_salon.views import home
 from services.models import Service
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+# Vista para corte de cabello
 def get_booking_hair(request):
+
+    # Obtenemos fechas de los timeslot.
     available_days = TimeSlot.objects.values_list('date', flat=True).distinct()
     timeslots_by_day = {}
-    hours = OpeningHours.objects.all()
 
+    # Filtramos cada dia en available_days
     for day in available_days:
+        # Agregamos los timeslot de cada dia al diccionario timeslot_by_day.
         timeslots_by_day[day] = TimeSlot.objects.filter(date=day, duration=40)
 
     # Paginación
@@ -27,11 +31,13 @@ def get_booking_hair(request):
         current_days = paginator.page(paginator.num_pages)
 
     form = BookingForm()
+
+    # Filtrado para que en la vista corte de cabello solo se pueda elegir esta opcion. Filtrado para titulo.
     form.fields['service'].queryset = Service.objects.filter(service_type='Corte de cabello')
     title = Service.objects.filter(service_type='Corte de cabello')
+
     context = {
         'form': form,
-        'hours': hours,
         'timeslots_by_day': timeslots_by_day,
         'current_days': current_days, 
         'title': title
@@ -39,18 +45,21 @@ def get_booking_hair(request):
 
     return render(request, 'booking/booking.html', context)
 
-
+# Vista para corte de cabello y barba
 def get_booking_hair_beard(request):
+
+    # Obtiene los valores 'date' de Timeslot.
     available_days = TimeSlot.objects.values_list('date', flat=True).distinct()
     timeslots_by_day = {}
-    hours = OpeningHours.objects.all()
-
+    
+    # Filtramos cada dia en available_days
     for day in available_days:
+        # Agregamos los timeslot de cada dia al diccionario timeslot_by_day.
         timeslots_by_day[day] = TimeSlot.objects.filter(date=day, duration=60)
 
     # Paginación
     page = request.GET.get('page')
-    paginator = Paginator(available_days, 6)  # Muestra 6 días por página
+    paginator = Paginator(available_days, 6)
     try:
         current_days = paginator.page(page)
     except PageNotAnInteger:
@@ -59,12 +68,13 @@ def get_booking_hair_beard(request):
         current_days = paginator.page(paginator.num_pages)
 
     form = BookingForm()
+
+    # Filtrado para que en la vista corte de cabello solo se pueda elegir esta opcion. Filtrado para titulo.
     form.fields['service'].queryset = Service.objects.filter(service_type='Corte y barba')
     title = Service.objects.filter(service_type='Corte y barba')
 
     context = {
         'form': form,
-        'hours': hours,
         'timeslots_by_day': timeslots_by_day,
         'current_days': current_days,
         'title': title
@@ -72,7 +82,7 @@ def get_booking_hair_beard(request):
 
     return render(request, 'booking/booking.html', context)
 
-
+#Vista para que el usuario logueado cree la reserva.
 @login_required
 def create_booking_authenticated(request):
 
@@ -93,6 +103,7 @@ def create_booking_authenticated(request):
     # Si el método no es 'POST', redirigir a la vista para el método 'GET'
     return home(request)
 
+# Listamos las reservas del usuario.
 @login_required
 def user_bookings(request):
     user = request.user
@@ -104,6 +115,7 @@ def user_bookings(request):
 
     return render(request, 'booking/user_bookings.html', context)
 
+# El usuario puede cancelar la reserva.
 @login_required
 def cancel_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
@@ -116,12 +128,12 @@ def cancel_booking(request, booking_id):
         
         booking.delete()
 
-        # Volver a habilitar el timeslot asociado
+        # Volvemos a habilitar el timeslot.
         timeslot = get_object_or_404(TimeSlot, id=timeslot_id)
         timeslot.is_reservated = False
         timeslot.save()
 
-        # Liberar los timeslots bloqueados debido a la superposición de horarios
+        # Liberamos los timeslots bloqueados debido a la superposición de horarios
         overlapping_slots = TimeSlot.objects.filter(
             Q(opening_hours=timeslot.opening_hours),
             Q(date=timeslot.date),
@@ -130,16 +142,15 @@ def cancel_booking(request, booking_id):
                 Q(start_time__gte=timeslot.start_time, end_time__lte=timeslot.end_time) |
                 Q(start_time__lte=timeslot.start_time, end_time__gte=timeslot.end_time)
             )
-        ).exclude(pk=timeslot.pk)  # Excluye el timeslot que ya se ha marcado como reservado
+        ).exclude(pk=timeslot.pk)
 
         for overlapping_slot in overlapping_slots:
             overlapping_slot.is_blocked = False
             overlapping_slot.save()
 
-        # Redirigir a la lista de reservas del usuario o a una página de confirmación
+        
         return redirect('user_bookings')
 
-    # Si el método no es 'POST', podrías renderizar un formulario de confirmación de cancelación
     context = {
         'booking': booking,
     }

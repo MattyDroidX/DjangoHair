@@ -19,7 +19,6 @@ class HairSalon(models.Model):
 
 
 class OpeningHours(models.Model):
-
     salon = models.ForeignKey(HairSalon, on_delete=models.CASCADE)
     date = models.DateField(default=date.today)
     opening_time = models.TimeField()
@@ -27,7 +26,7 @@ class OpeningHours(models.Model):
     is_closed = models.BooleanField()
 
     class Meta:
-        verbose_name_plural = "Horarios"
+        verbose_name_plural = "Horarios de apertura"
 
     def get_opening_hours(self):
             if self.is_closed:
@@ -41,9 +40,7 @@ class OpeningHours(models.Model):
     def __str__(self):
         return f"{self.get_opening_hours()}"
     
-    
-
-# CREA TIME SLOTS DE CORTE 
+    # Crea time_slots de corte de cabello y corte de cabello y barba.
     def create_time_slots(self):
         # Elimina los TimeSlot existentes para este OpeningHours antes de recrearlos
         self.timeslot_set.all().delete()
@@ -52,7 +49,7 @@ class OpeningHours(models.Model):
         opening_datetime = datetime.combine(self.date, self.opening_time)
         closing_datetime = datetime.combine(self.date, self.closing_time)
 
-        # Divide ese tiempo en intervalos más pequeños (puedes ajustar el intervalo según tus necesidades)
+        # Divide ese tiempo en intervalos más pequeños 
         intervals = [timedelta(minutes=40), timedelta(minutes=60)]
         current_datetime = opening_datetime
 
@@ -69,7 +66,7 @@ class OpeningHours(models.Model):
                     date = self.date,
                     start_time=current_datetime.time(),
                     end_time=end_datetime.time(),
-                    is_blocked=False,  # Puedes ajustar esto según tus necesidades
+                    is_blocked=False,
                     duration = duration
                 )
 

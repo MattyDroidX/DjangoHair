@@ -1,0 +1,16 @@
+<!-- confirm_delete_past_opening_hours.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mx-auto text-center mt-3">
+{% for opening_hour in past_opening_hours %}
+<li>{{opening_hour}}</li>
+{% endfor %}
+
+<form method="post" action="{% url 'delete_past_opening_hours' %}">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Confirmar Eliminación</button>
+  </form>
+</div>
+  {% endblock content %}

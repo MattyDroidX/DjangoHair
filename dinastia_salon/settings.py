@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-from datetime import timedelta
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -41,11 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
     'users',
     'booking', 
     'services',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [

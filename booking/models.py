@@ -30,6 +30,7 @@ class Booking(models.Model):
         TimeSlot.objects.filter(pk=self.timeslot.pk).update(is_reservated=True)
     
         overlapping_slots = TimeSlot.objects.filter(
+            # Se filtra por franja horaria/dia que pertenecen a la misma franja horaria/dia del nuevo turno.
             Q(opening_hours=self.timeslot.opening_hours),
             Q(date=self.timeslot.date),
             (
